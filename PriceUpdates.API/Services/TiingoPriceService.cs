@@ -51,6 +51,10 @@ namespace PriceUpdates.API.Services
 			_cryptoWebSocketUri = new Uri($"wss://api.tiingo.com/crypto?eventName=auth&authorization={_tiingoApiKey}");
 		}
 
+		/// <summary>
+		/// Start Tiingo price service for fetching forex and crypto prices
+		/// </summary>
+		/// <param name="stoppingToken">Cancellation token</param>
 		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 		{
 			//return;
@@ -62,13 +66,18 @@ namespace PriceUpdates.API.Services
 				_ = Task.Run(() => ConnectCryptoWebSocket(stoppingToken), stoppingToken);
 			}
 
-			// Handle Forex: Use WebSocket on weekdays, REST API on weekends
-			_ = Task.Run(() => ManageForexUpdates(stoppingToken), stoppingToken);
-
+			if (_fiatSymbols.Count > 0)
+			{
+				// Handle Forex: Use WebSocket on weekdays, REST API on weekends
+				_ = Task.Run(() => ManageForexUpdates(stoppingToken), stoppingToken);
+			}
 			_logger.LogInformation("TiingoPriceService is now managing price updates.");
 		}
 
-		//Dynamically manage Forex updates (WebSocket on weekdays, API on weekends)
+		/// <summary>
+		/// Dynamically manage Forex updates (WebSocket on weekdays, API on weekends)
+		/// </summary>
+		/// <param name="stoppingToken">Cancellation token</param>
 		private async Task ManageForexUpdates(CancellationToken stoppingToken)
 		{
 			bool marketClosedPreviously = false;
@@ -106,19 +115,31 @@ namespace PriceUpdates.API.Services
 			}
 		}
 
-		//Connect to Tiingo WebSocket for Forex prices
+		/// <summary>
+		/// Connect to Tiingo WebSocket for Forex prices
+		/// </summary>
+		/// <param name="stoppingToken">Cancellation token</param>
 		private async Task ConnectForexWebSocket(CancellationToken stoppingToken)
 		{
 			await ConnectWebSocket(_forexWebSocketUri, _fiatSymbols, "forex", stoppingToken);
 		}
 
-		//Connect to Tiingo WebSocket for Crypto prices
+		/// <summary>
+		/// Connect to Tiingo WebSocket for Crypto prices
+		/// </summary>
+		/// <param name="stoppingToken">Cancellation token</param>
 		private async Task ConnectCryptoWebSocket(CancellationToken stoppingToken)
 		{
 			await ConnectWebSocket(_cryptoWebSocketUri, _cryptoSymbols, "crypto", stoppingToken);
 		}
 
-		//Generic method to connect and subscribe to a WebSocket
+		/// <summary>
+		/// Generic method to connect and subscribe to a WebSocket
+		/// </summary>
+		/// <param name="webSocketUri">WebSocket URI</param>
+		/// <param name="symbols">List of symbols to subscribe</param>
+		/// <param name="serviceType">Service type (forex or crypto)</param>
+		/// <param name="stoppingToken">Cancellation token</param>
 		private async Task ConnectWebSocket(Uri webSocketUri, List<string> symbols, string serviceType, CancellationToken stoppingToken)
 		{
 			ClientWebSocket? socket = new ClientWebSocket();
@@ -155,7 +176,10 @@ namespace PriceUpdates.API.Services
 			}
 		}
 
-		//Fetch Forex prices via REST API when the market is closed
+		/// <summary>
+		/// Fetch Forex prices via REST API when the market is closed
+		/// </summary>
+		/// <param name="symbol">Optional symbol for fetching a single price</param>
 		public async Task FetchForexPricesFromApi(string symbol = null)
 		{
 			bool isMarketClosed = !(DateTime.UtcNow.DayOfWeek is >= DayOfWeek.Monday and <= DayOfWeek.Friday);
@@ -201,7 +225,12 @@ namespace PriceUpdates.API.Services
 		}
 
 
-		//Subscribe to symbols for WebSocket
+		/// <summary>
+		/// Subscribe to symbols for WebSocket updates
+		/// </summary>
+		/// <param name="socket">WebSocket instance</param>
+		/// <param name="symbols">List of symbols</param>
+		/// <param name="serviceType">Service type (forex or crypto)</param>
 		private async Task SubscribeToSymbols(ClientWebSocket socket, List<string> symbols, string serviceType)
 		{
 			if (socket.State != WebSocketState.Open)
@@ -229,7 +258,11 @@ namespace PriceUpdates.API.Services
 			_logger.LogInformation("Subscribed to Tiingo {ServiceType} WebSocket for symbols: {Symbols}", serviceType, string.Join(", ", symbols));
 		}
 
-		//Process WebSocket messages for both Forex & Crypto
+		/// <summary>
+		/// Process WebSocket messages for both Forex & Crypto
+		/// </summary>
+		/// <param name="jsonString">Received JSON message</param>
+		/// <param name="serviceType">Service type (forex or crypto)</param>
 		private async Task ProcessWebSocketMessage(string jsonString, string serviceType)
 		{
 			try

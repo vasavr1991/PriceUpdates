@@ -64,6 +64,17 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// Redirect root URL to Swagger UI
+app.Use(async (context, next) =>
+{
+	if (context.Request.Path == "/")
+	{
+		context.Response.Redirect("/swagger/index.html");
+		return;
+	}
+	await next();
+});
+
 // Updated WebSocket route handling with structured logs
 app.Use(async (context, next) =>
 {

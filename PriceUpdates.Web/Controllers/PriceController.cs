@@ -19,6 +19,9 @@ namespace PriceUpdates.Web.Controllers
 			_logger = logger;
 		}
 
+		/// <summary>
+		/// Fetch list of available instruments from API
+		/// </summary>
 		public async Task<IActionResult> Index()
 		{
 			// API URL (Ensure this matches your API project URL)
@@ -32,7 +35,11 @@ namespace PriceUpdates.Web.Controllers
 			return View(instruments);
 		}
 
-		// UI Calls This Instead of API Directly
+		/// <summary>
+		/// Fetch the latest price for a specific symbol from the API
+		/// </summary>
+		/// <param name="symbol">Instrument symbol</param>
+		/// <returns>Price data in JSON format</returns>
 		[HttpGet("price/{symbol}/get")]
 		public async Task<IActionResult> GetPrice(string symbol)
 		{

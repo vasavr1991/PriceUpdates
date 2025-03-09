@@ -16,7 +16,9 @@ namespace PriceUpdates.API.Services
 			LoadInstruments();
 		}
 
-		// Load instruments from the JSON file
+		/// <summary>
+		///  Load instruments from the JSON file
+		/// </summary>
 		private void LoadInstruments()
 		{
 			try
@@ -38,6 +40,10 @@ namespace PriceUpdates.API.Services
 				_logger.LogError(ex, "Error loading instruments from JSON.");
 			}
 		}
+
+		/// <summary>
+		/// Receive the instruments from the InstrumentService
+		/// </summary>
 		public List<InstrumentModel> GetInstruments() => _instruments;
 	}
 }

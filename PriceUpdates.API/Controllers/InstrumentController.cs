@@ -25,6 +25,10 @@ namespace PriceUpdates.API.Controllers
 			_logger = logger;
 		}
 
+		/// <summary>
+		/// Receive the instruments from the InstrumentService
+		/// </summary>
+		/// <returns></returns>
 		[HttpGet]
 		public IActionResult GetInstruments()
 		{
@@ -32,6 +36,10 @@ namespace PriceUpdates.API.Controllers
 			_logger.LogInformation("Retrieved {Count} instruments.", instruments.Count());
 			return Ok(instruments);
 		}
+		/// <summary>
+		/// Receive the prices for all instruments
+		/// </summary>
+		/// <returns></returns>
 
 		[HttpGet("prices")]
 		public IActionResult GetAllPrices()
@@ -46,6 +54,12 @@ namespace PriceUpdates.API.Controllers
 			_logger.LogInformation("Retrieved {Count} instrument prices.", prices.Count);
 			return Ok(prices);
 		}
+
+		/// <summary>
+		/// Receive price for specified instrument
+		/// </summary>
+		/// <param name="symbol"></param>
+		/// <returns></returns>
 
 		[HttpGet("{symbol}/price")]
 		public async Task<IActionResult> GetPrice(string symbol)

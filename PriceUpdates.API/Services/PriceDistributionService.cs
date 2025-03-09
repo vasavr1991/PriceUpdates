@@ -18,7 +18,10 @@ namespace PriceUpdates.API.Services
 			_priceStore = priceStore;
 			_wsManager = wsManager;
 		}
-
+		/// <summary>
+		/// Distribute all the prices to the web socket clients
+		/// </summary>
+		/// <param name="stoppingToken">Cancellation token</param>
 		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 		{
 			_logger.LogInformation("PriceDistributorService started at {StartTime}.", DateTime.UtcNow);

@@ -9,6 +9,11 @@ namespace PriceUpdates.API.Services
 	{
 		private ConcurrentDictionary<string, WebSocket> _clients = new();
 
+		/// <summary>
+		/// Add WebSocket client to the manager
+		/// </summary>
+		/// <param name="socket">WebSocket instance</param>
+		/// <returns>Connection ID</returns>
 		public string AddSocket(WebSocket socket)
 		{
 			var connectionId = Guid.NewGuid().ToString();
@@ -16,11 +21,19 @@ namespace PriceUpdates.API.Services
 			return connectionId;
 		}
 
+		/// <summary>
+		/// Remove WebSocket client from the manager
+		/// </summary>
+		/// <param name="connectionId">Connection ID</param>
 		public void RemoveSocket(string connectionId)
 		{
 			_clients.TryRemove(connectionId, out _);
 		}
 
+		/// <summary>
+		/// Broadcast message to all WebSocket clients
+		/// </summary>
+		/// <param name="message">Message to broadcast</param>
 		public async Task BroadcastMessageAsync(string message)
 		{
 			var messageBuffer = Encoding.UTF8.GetBytes(message);
