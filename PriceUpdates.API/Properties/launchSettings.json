@@ -1,0 +1,12 @@
+﻿{
+    "profiles": {
+        "PriceUpdates.API": {
+            "commandName": "Project",
+            "dotnetRunMessages": true,
+            "applicationUrl": "http://localhost:7800",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        }
+    }
+}

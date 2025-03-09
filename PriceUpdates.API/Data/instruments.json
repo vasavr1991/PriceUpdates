@@ -1,0 +1,17 @@
+[
+    {
+        "symbol": "EURUSD",
+        "name": "Euro / US Dollar",
+        "service": "fiat"
+    },
+    {
+        "symbol": "USDJPY",
+        "name": "US Dollar / Japanese Yen",
+        "service": "fiat"
+    },
+    {
+        "symbol": "BTCUSDT",
+        "name": "Bitcoin / US Dollar",
+        "service": "crypto"
+    }
+]
