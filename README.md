@@ -16,8 +16,6 @@
 6. [Live Price Updates (WebSocket)](#live-price-updates-websocket)  
 7. [Logging](#logging)  
 8. [Project Structure](#project-structure)  
-9. [Contributing](#contributing)  
-10. [License](#license) 
 
 ---
 
