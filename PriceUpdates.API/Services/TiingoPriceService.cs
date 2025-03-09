@@ -300,9 +300,6 @@ namespace PriceUpdates.API.Services
 					_priceStore.UpdatePrice(symbol, price);
 					_logger.LogInformation("Updated {ServiceType} price for {Symbol}: {Price}", serviceType, symbol, price);
 
-					//Broadcast the update via WebSocketManager
-					var broadcastMessage = JsonSerializer.Serialize(new { symbol, price });
-					await _wsManager.BroadcastMessageAsync(broadcastMessage);
 				}
 				else
 				{
