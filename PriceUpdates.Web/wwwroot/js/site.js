@@ -53,7 +53,7 @@ function setPrice(symbol, price) {
 	priceElement.innerHTML = `
 			<div class="d-flex align-items-center gap-2">
 				<span class="fs-14 fw-500 ${newPrice > previousPrice ? 'text-success' : 'text-danger'}">
-					$${newPrice.toFixed(2)}
+					$${newPrice.toFixed(4)}
 				</span>
 				<i class="bi bi-arrow-${newPrice > previousPrice ? 'up' : 'down'}-right fs-12 ${newPrice > previousPrice ? 'text-success' : 'text-danger'
 		}"></i>
